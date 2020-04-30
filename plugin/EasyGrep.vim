@@ -2808,6 +2808,12 @@ function! s:GetGrepCommandLine(pattern, add, wholeword, count, escapeArgs, filte
         let opts .= " " . join(map(split(filesToExclude, ','), commandParams["opt_str_mapexclusionsexpression"]), ' ') . " "
     endif
 
+    " User cmd
+    if !empty(get(g:, 'EasyGrepCommandExtraOpts', ''))
+        let Fn_extraOpts = function(g:EasyGrepCommandExtraOpts)
+        let opts = Fn_extraOpts(opts)
+    endif
+
     if s:CommandHas("opt_bool_isinherentlyrecursive")
         " Eliminate a trailing star
         call map(fileTargetList, 'substitute(v:val, "/\\*$", "/", "")')
